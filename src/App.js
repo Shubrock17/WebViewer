@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import uploadFileToBlob, { isStorageConfigured } from "./azureUpload";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
+import Viewer from "./Viewer";
 var convertapi = require("convertapi")("eEmtRu9t9Yt61IZh");
 
 const storageConfigured = isStorageConfigured();
@@ -39,9 +39,10 @@ const App = () => {
 
   //PPT upload
   const onFileUpload = async () => {
-    console.log(fileSelected.type);
+    console.log(fileSelected.name.split('.').pop());
     //If uploaded file is ppt
-    if (fileSelected.type ==="application/vnd.openxmlformats-officedocument.presentationml.presentation") 
+    //fileSelected.type ==="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    if (fileSelected.name.split('.').pop() ==="pptx"||fileSelected.name.split('.').pop() ==="ppt") 
     {
       setUploading(true);
       const blobsInContainer = await uploadFileToBlob(fileSelected);
@@ -89,12 +90,7 @@ const App = () => {
       <div id="pdf_renderer"></div>
       {temp&&
         <div>
-          <Document file={temp} onLoadSuccess={onDocumentLoadSuccess}>
-            <Page pageNumber={pageNumber} />
-          </Document>
-          <p>
-            Page {pageNumber} of {numPages}
-          </p>
+         <Viewer pdf={temp} />
         </div>
       }
     </div>
