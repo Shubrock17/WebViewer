@@ -39,6 +39,7 @@ const App = () => {
 
   //PPT upload
   const onFileUpload = async () => {
+    if(fileSelected!==null){
     console.log(fileSelected.name.split('.').pop());
     //If uploaded file is ppt
     //fileSelected.type ==="application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -59,6 +60,10 @@ const App = () => {
     else {
       alert("Invalid File Type! Please select ppt to upload.");
     }
+  }
+  else{
+    alert("Select a ppt to upload !")
+  }
   };
 
 
@@ -73,7 +78,6 @@ const App = () => {
   );
   const DisplayImagesFromContainer = () => (
     <div>
-      <h2>Container items</h2>
       <ul>{blobList}</ul>
     </div>
   );
@@ -81,7 +85,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Upload file to Azure Blob Storage</h1>
+      <h1>Upload file to View</h1>
       {storageConfigured && !uploading && DisplayForm()}
       {storageConfigured && uploading && <div>Uploading</div>}
       <hr />

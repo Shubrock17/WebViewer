@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import './Comments.scss';
+import "./Comments.scss";
 class CommentBox extends React.Component {
   constructor() {
     super();
@@ -41,10 +41,7 @@ class CommentBox extends React.Component {
       <div className="comment-box">
         <h2>Join the Discussion!</h2>
         <CommentForm addComment={this._addComment.bind(this)} />
-        <button
-          id="comment-reveal"
-          onClick={this._handleClick.bind(this)}
-        >
+        <button id="comment-reveal" onClick={this._handleClick.bind(this)}>
           {buttonText}
         </button>
         <h3>Comments</h3>
@@ -167,6 +164,22 @@ const Viewer = (props) => {
   function nextPage() {
     changePage(1);
   }
+  const getCurrentPage = (e) => {
+    if (pdf === null) return;
+
+    // Get key code
+    var code = e.keyCode ? e.keyCode : e.which;
+
+    // If key code matches that of the Enter key
+    if (code === 13) {
+      var desiredPage = document.getElementById("current_page").valueAsNumber;
+
+      if (desiredPage >= 1 && desiredPage <= numPages) {
+        setPageNumber(desiredPage);
+        document.getElementById("current_page").value = desiredPage;
+      }
+    }
+  };
 
   const { pdf } = props;
   return (
@@ -185,6 +198,12 @@ const Viewer = (props) => {
         <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
           Previous
         </button>
+        <input
+          id="current_page"
+          onKeyPress={(event) => getCurrentPage(event)}
+          defaultValue="1"
+          type="number"
+        />
         <button
           type="button"
           disabled={pageNumber >= numPages}
