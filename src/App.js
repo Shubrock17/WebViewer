@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import uploadFileToBlob, { isStorageConfigured } from "./azureUpload";
 import Viewer from "./Viewer";
+import Header from "./Components/Header";
+import Main from './Components/Main';
 var convertapi = require("convertapi")("eEmtRu9t9Yt61IZh");
 
 const storageConfigured = isStorageConfigured();
@@ -80,7 +82,9 @@ const App = () => {
   );
   return (
     <div>
-      <h1>Upload file to View</h1>
+      <Header/>
+      <Main/>
+      {/* <h1>Upload file to View</h1>
       {storageConfigured && !uploading && DisplayForm()}
       {storageConfigured && uploading && <div>Uploading</div>}
       <hr />
@@ -92,7 +96,7 @@ const App = () => {
         <div>
          <Viewer pdf={temp} filename={fileset} />
         </div>
-      }
+      } */}
     </div>
   );
 };
