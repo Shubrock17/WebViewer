@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import uploadFileToBlob, { isStorageConfigured } from "./azureUpload";
 import Viewer from "./Viewer";
@@ -5,18 +6,15 @@ var convertapi = require("convertapi")("eEmtRu9t9Yt61IZh");
 
 const storageConfigured = isStorageConfigured();
 const App = () => {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
   const [blobList, setBlobList] = useState();
   const [temp, settemp] = useState();
   const [fileSelected, setFileSelected] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [fileset, setfileset] = useState();
   const [inputKey, setInputKey] = useState(Math.random().toString(36));
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
   const onFileChange = (event) => {
     setFileSelected(event.target.files[0]);
+    setfileset(event.target.files[0].name);
   };
 
   //To Convert PPT  into PDF
@@ -31,16 +29,14 @@ const App = () => {
       )
       .then(function (result) {
        // console.log(result);
-        console.log(result.response.Files[0].Url);
+        console.log(result.response.Files[0]);
         settemp(result.response.Files[0].Url);
-        //result.saveFiles('/path/to/dir');
       });
   };
 
   //PPT upload
   const onFileUpload = async () => {
     if(fileSelected!==null){
-    console.log(fileSelected.name.split('.').pop());
     //If uploaded file is ppt
     //fileSelected.type ==="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     if (fileSelected.name.split('.').pop() ==="pptx"||fileSelected.name.split('.').pop() ==="ppt") 
@@ -53,8 +49,9 @@ const App = () => {
       setInputKey(Math.random().toString(36));
 
       //convert the updated ppt file to pdf
-      //console.log(blobsInContainer);
       convert(blobsInContainer);
+      const bodytosend={name:fileSelected.name,user:"test_user"}
+      axios.post('http://localhost:5000/ppt/',bodytosend).then((resp)=>console.log(resp)).catch((err)=>console.log(err));
     }
     //If uploaded file is not a ppt
     else {
@@ -81,8 +78,6 @@ const App = () => {
       <ul>{blobList}</ul>
     </div>
   );
-
-
   return (
     <div>
       <h1>Upload file to View</h1>
@@ -92,9 +87,10 @@ const App = () => {
       {storageConfigured && DisplayImagesFromContainer()}
       {!storageConfigured && <div>Storage is not configured.</div>}
       <div id="pdf_renderer"></div>
-      {temp&&
+      {console.log(fileset)}
+      {temp&&fileset&&
         <div>
-         <Viewer pdf={temp} />
+         <Viewer pdf={temp} filename={fileset} />
         </div>
       }
     </div>
