@@ -4,6 +4,11 @@ import uploadFileToBlob, { isStorageConfigured } from "./azureUpload";
 import Viewer from "./Viewer";
 import Header from "./Components/Header";
 import Main from './Components/Main';
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import SignUp from "./Components/SignUp";
+import Dashboard from "./Components/Dashboard";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 var convertapi = require("convertapi")("eEmtRu9t9Yt61IZh");
 
 const storageConfigured = isStorageConfigured();
@@ -81,23 +86,32 @@ const App = () => {
     </div>
   );
   return (
-    <div>
-      <Header/>
-      <Main/>
-      {/* <h1>Upload file to View</h1>
-      {storageConfigured && !uploading && DisplayForm()}
-      {storageConfigured && uploading && <div>Uploading</div>}
-      <hr />
-      {storageConfigured && DisplayImagesFromContainer()}
-      {!storageConfigured && <div>Storage is not configured.</div>}
-      <div id="pdf_renderer"></div>
-      {console.log(fileset)}
-      {temp&&fileset&&
-        <div>
-         <Viewer pdf={temp} filename={fileset} />
-        </div>
-      } */}
+    <div className="app">
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/register" component={SignUp} />
+          <Route exact path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
     </div>
+    // <div>
+    //   <Header/>
+    //   <Main/>
+    //   {/* <h1>Upload file to View</h1>
+    //   {storageConfigured && !uploading && DisplayForm()}
+    //   {storageConfigured && uploading && <div>Uploading</div>}
+    //   <hr />
+    //   {storageConfigured && DisplayImagesFromContainer()}
+    //   {!storageConfigured && <div>Storage is not configured.</div>}
+    //   <div id="pdf_renderer"></div>
+    //   {console.log(fileset)}
+    //   {temp&&fileset&&
+    //     <div>
+    //      <Viewer pdf={temp} filename={fileset} />
+    //     </div>
+    //   } */}
+    // </div>
   );
 };
 
