@@ -1,7 +1,10 @@
-import React from 'react';
-
+import React,{useEffect} from 'react';
+import { logout } from "../Config";
 const SignOut = () => {
-  return <h1>this is the Repositories tab</h1>
+  useEffect(() => {
+    logout();
+  }, [])
+  return <h1>You have successfully logged out  </h1>
 }
 
 export default SignOut;

@@ -4,6 +4,7 @@ import Home from './Home';
 import MyFiles from './MyFiles';
 import Upload from './Upload';
 import SignOut from './SignOut';
+import App from '../App';
 
 
 const Main = () => (
@@ -13,6 +14,7 @@ const Main = () => (
       <Route path='/MyFiles' component={MyFiles} />
       <Route path='/Upload' component={Upload} />
       <Route path='/SignOut' component={SignOut} />
+      <Route path='/myhome' component={App} />
     </Switch>
   </div>
 )

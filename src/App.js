@@ -86,6 +86,7 @@ const App = () => {
     </div>
   );
   return (
+    <>
     <div className="app">
       <Router>
         <Switch>
@@ -95,24 +96,26 @@ const App = () => {
         </Switch>
       </Router>
     </div>
-    // <div>
-    //   <Header/>
-    //   <Main/>
-    //   {/* <h1>Upload file to View</h1>
-    //   {storageConfigured && !uploading && DisplayForm()}
-    //   {storageConfigured && uploading && <div>Uploading</div>}
-    //   <hr />
-    //   {storageConfigured && DisplayImagesFromContainer()}
-    //   {!storageConfigured && <div>Storage is not configured.</div>}
-    //   <div id="pdf_renderer"></div>
-    //   {console.log(fileset)}
-    //   {temp&&fileset&&
-    //     <div>
-    //      <Viewer pdf={temp} filename={fileset} />
-    //     </div>
-    //   } */}
-    // </div>
+    <div>
+      <Header/>
+      <Main/>
+      {/* <h1>Upload file to View</h1>
+      {storageConfigured && !uploading && DisplayForm()}
+      {storageConfigured && uploading && <div>Uploading</div>}
+      <hr />
+      {storageConfigured && DisplayImagesFromContainer()}
+      {!storageConfigured && <div>Storage is not configured.</div>}
+      <div id="pdf_renderer"></div>
+      {console.log(fileset)}
+      {temp&&fileset&&
+        <div>
+         <Viewer pdf={temp} filename={fileset} />
+        </div>
+      } */}
+    </div>
+    </>
   );
+
 };
 
 export default App;
