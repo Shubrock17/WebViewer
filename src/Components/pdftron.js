@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import WebViewer from "@pdftron/webviewer";
 
-const Home = () => {
-  const viewdiv = useRef(null);
+const Pdftron = () => {
+  const Viewdiv = useRef(null);
   useEffect(() => {
     WebViewer(
       {
@@ -10,20 +10,18 @@ const Home = () => {
         initialDoc:
           "https://v2.convertapi.com/d/o0l72eqxjnzp9suws3e0djzlzuqtmjju/7265e42bruteforce_3_idea.pdf",
       },
-      viewdiv.current
+      Viewdiv.current
     ).then((instance) => {});
   }, []);
   return (
     <>
-      <h1>Home Page</h1>
-
       <div
         className="webviewer"
-        ref={viewdiv}
+        ref={Viewdiv}
         style={{ height: "100vh" }}
       ></div>
     </>
   );
 };
 
-export default Home;
+export default Pdftron;
