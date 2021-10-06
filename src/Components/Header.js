@@ -9,7 +9,8 @@ const Header = () => {
   const history = useHistory();
   const clickables = [
     { name: "Home" },
-    { name: "MyFiles" },
+    { name: "My Files"},
+    { name: "All Files"},
     { name: "Upload" },
     { name: "SignOut" }
   ];

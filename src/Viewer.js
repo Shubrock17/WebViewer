@@ -42,8 +42,9 @@ const Viewer = (props) => {
   const pdf = props.pdf;
   return (
     <>
-      <div>
-        <div style={{ float: "left", width: "1000px",marginBottom:"20px" }}>
+        <div
+          style={{ float: "left", width: "60%", margin: "2%", height: "100%" }}
+        >
           <Document
             file={props.pdf}
             options={{ workerSrc: "/pdf.worker.js" }}
@@ -52,7 +53,7 @@ const Viewer = (props) => {
             <Page pageNumber={pageNumber} />
           </Document>
         </div>
-        <div style={{ float: "left" }}>
+        <div style={{ float: "left", width: "30%", margin: "2%" }}>
           <p>
             Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
           </p>
@@ -77,10 +78,17 @@ const Viewer = (props) => {
             Next
           </button>
         </div>
-        <div style={{float:"left",marginTop:"50px"}}>
+        <div
+          style={{
+            float: "left",
+            margin: "2%",
+            height: "440px",
+            marginTop: "-1%",
+            overflow: "auto",
+          }}
+        >
           <CommentBox pptname={props.filename} />
         </div>
-      </div>
     </>
   );
 };
