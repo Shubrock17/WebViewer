@@ -5,6 +5,7 @@ server/node_modules
 /node_modules
 /.pnp
 .pnp.js
+/public/lib
 
 # testing
 /coverage
@@ -25,3 +26,5 @@ yarn-error.log*
 
 package-lock.json
 package-lock.json
+
+
