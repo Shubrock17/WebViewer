@@ -59,7 +59,7 @@ const CommentBox = (props) => {
   };
   return (
     <div className="comment-box">
-      <h2>Join the Discussion!</h2>
+      <h2>Add Comments</h2>
       <CommentForm addComment={_addComment} />
       <button id="comment-reveal" onClick={_handleClick}>
         {showComments ? "Hide Comments" : "Show Comments"}

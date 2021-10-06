@@ -9,7 +9,8 @@ const Viewer = (props) => {
     setNumPages(numPages);
     setPageNumber(1);
   }
-
+  console.log(props);
+  console.log(props.pdf);
   function changePage(offset) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
@@ -38,41 +39,48 @@ const Viewer = (props) => {
     }
   };
 
-  const { pdf } = props;
+  const pdf = props.pdf;
   return (
     <>
-    <div>
-      <Document
-        file={pdf}
-        options={{ workerSrc: "/pdf.worker.js" }}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        <Page pageNumber={pageNumber} />
-      </Document>
       <div>
-        <p>
-          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-        </p>
-        <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
-          Previous
-        </button>
-        <input
-          id="current_page"
-          onKeyPress={(event) => getCurrentPage(event)}
-          defaultValue="1"
-          type="number"
-        />
-        <button
-          type="button"
-          disabled={pageNumber >= numPages}
-          onClick={nextPage}
-        >
-          Next
-        </button>
+        <div style={{ float: "left", width: "1000px",marginBottom:"20px" }}>
+          <Document
+            file={props.pdf}
+            options={{ workerSrc: "/pdf.worker.js" }}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} />
+          </Document>
+        </div>
+        <div style={{ float: "left" }}>
+          <p>
+            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+          </p>
+          <button
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+          >
+            Previous
+          </button>
+          <input
+            id="current_page"
+            onKeyPress={(event) => getCurrentPage(event)}
+            defaultValue="1"
+            type="number"
+          />
+          <button
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+          >
+            Next
+          </button>
+        </div>
+        <div style={{float:"left",marginTop:"50px"}}>
+          <CommentBox pptname={props.filename} />
+        </div>
       </div>
-      <CommentBox pptname={props.filename}/>
-      </div>
-      
     </>
   );
 };

@@ -13,7 +13,7 @@ function Login() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) history.replace("/myhome");
+    if (user) history.replace('/Dashboard1');
   }, [user, loading]);
   return (
     <div className="login">
@@ -41,9 +41,6 @@ function Login() {
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-        <div>
-          <Link to="/reset">Forgot Password</Link>
-        </div>
         <div>
           Don't have an account? <Link to="/register">Register</Link> now.
         </div>

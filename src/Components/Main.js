@@ -4,6 +4,7 @@ import Home from './Home';
 import MyFiles from './MyFiles';
 import Upload from './Upload';
 import SignOut from './SignOut';
+import Login from './Login';
 import App from '../App';
 
 
