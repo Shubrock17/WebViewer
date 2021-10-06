@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import Pdftron from "./Pdftron";
 import axios from 'axios';
 import { auth} from "../Config";
 import Viewer from "../Viewer";
@@ -44,7 +45,9 @@ const Home = () => {
         />
       </div>}
       {console.log(fileset)}
+      <div> 
+      <Pdftron />
+      </div>
   </>);
 }
-
 export default Home;
