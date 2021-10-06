@@ -35,11 +35,18 @@ const commentSchema = new Schema(
       name: {
         type: String,
         required: true,
-        unique: true,
       },
       user:{
         type:String,
         required:true,
+      },
+      ppturl:{
+        type:String,
+        required:true
+      },
+      pdfurl:{
+        type:String,
+        required:true
       },
       comments: [commentSchema],
     },

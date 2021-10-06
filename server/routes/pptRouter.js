@@ -161,6 +161,13 @@ PPTRouter.route("/:pptid/comments")
       )
       .catch((err) => next(err));
   });
+  PPTRouter.route("/user/:user").get((req,res,next)=>{
+    PPT.find({ user: req.params.user }).then((ppts)=>{
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json(ppts);
+    },(err)=>next(err)).catch((err)=>next(err));
+  });
 
 // PPTRouter.route("/:pptid/comments/:commentid")
 //   .get((req, res, next) => {
