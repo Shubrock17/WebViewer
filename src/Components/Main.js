@@ -14,10 +14,10 @@ const Main = () => (
     <Switch>
       <Route path='/Home' component={Home} />
       <Route path='/My Files' component={MyFiles} />
+      {/* <Route path='/All Files' component={AllFiles}/> */}
       <Route path='/Upload' component={Upload} />
       <Route path='/SignOut' component={SignOut} />
       <Route path='/myhome' component={App} />
-      <Route path='/All Files' component={AllFiles}/>
     </Switch>
   </div>
 );

@@ -10,7 +10,7 @@ const Header = () => {
   const clickables = [
     { name: "Home" },
     { name: "My Files"},
-    { name: "All Files"},
+    // { name: "All Files"},
     { name: "Upload" },
     { name: "SignOut" }
   ];
