@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Pdftron from "./Pdftron";
 import axios from "axios";
 import { auth } from "../Config";
-import Viewer from "../Viewer";
 import { useAuthState } from "react-firebase-hooks/auth";
 const Home = () => {
   const [user] = useAuthState(auth);
@@ -30,6 +29,7 @@ const Home = () => {
             <>
               <li
                 onClick={(event) => {
+                  console.log(item.pdfurl);
                   showViewer(item.pdfurl);
                 }}
               >

@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import "../style/Dashboard.css";
 import { auth, db, logout } from "../Config";
 function Dashboard() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [name, setName] = useState("");
   const history = useHistory();
   const fetchUserName = async () => {

@@ -1,7 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import Navbar from './Navbar';
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { logout } from "../Config";
+
 
 const Header = () => {
   const [activeIndex, setactiveIndex] = useState(null)
@@ -9,16 +10,21 @@ const Header = () => {
   const history = useHistory();
   const clickables = [
     { name: "Home" },
-    { name: "My Files"},
-    // { name: "All Files"},
+    { name: "My View"},
+    { name: "Pdftron View"},
     { name: "Upload" },
     { name: "SignOut" }
   ];
+
+  const log=()=>{
+    logout();
+    history.replace('/');
+    window.location.reload(); 
+  }
   useEffect(() => {
-    if (activeIndex===3) {
-      logout();
-      history.replace("/dashboard")};
-  }, [activeIndex]);
+    if (activeIndex===4) {
+      log();
+  }}, [activeIndex]);
   return (
     <div>
     <ul>
@@ -34,6 +40,12 @@ const Header = () => {
           />
         })
       }
+      {/* <li>
+        <Link to={"/"} refresh="true">
+              <button onClick={log}>SignOut</button>
+        </Link>
+        
+      </li> */}
   </ul>
 </div>
   )

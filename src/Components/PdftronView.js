@@ -1,14 +1,11 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import axios from 'axios';
-import Viewer from "../Viewer";
-import uploadFileToBlob, { isStorageConfigured } from "../azureUpload";
+import Pdftron from "./Pdftron";
 
-const storageConfigured = isStorageConfigured();
 const MyFiles = () => {
   const [filelist, setfilelist] = useState(null);
   const [boolean, setboolean] = useState(false);
-  const [filepdf, setfilepdf] = useState(null);
   useEffect(() => {
     axios
       .get("http://localhost:5000/ppt")
@@ -18,7 +15,6 @@ const MyFiles = () => {
       .catch((err) => console.log(err));
   }, []);
   const [fileset, setfileset] = useState();
-  const [blobList, setBlobList] = useState();
 const showViewer=(value)=>{
   setboolean(true);
   setfileset(value);
@@ -41,14 +37,10 @@ const showViewer=(value)=>{
     <>
       <h4>This will show all files from storage</h4>
       {!boolean&&filelist && DisplayImagesFromContainer()}
-      {boolean&&<div>
-        <Viewer
-          pdf={
-            fileset
-          }
-          filename={fileset}
-        />
-      </div>}
+      {boolean&&
+        <div>
+        <Pdftron url={fileset}/>
+        </div>}
     </>
   );
 };

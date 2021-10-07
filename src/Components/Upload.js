@@ -9,7 +9,7 @@ var convertapi = require("convertapi")("0GUin1JxtDw7KydT");
 
 const storageConfigured = isStorageConfigured();
 const Upload = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [username, setusername] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [fileSelected, setFileSelected] = useState(null);
