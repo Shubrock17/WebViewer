@@ -44,7 +44,7 @@ const showViewer=(value)=>{
       {boolean&&<div>
         <Viewer
           pdf={
-            "https://v2.convertapi.com/d/qhdmik3ydpjs7u5u6gvc0g04xp9p2zv7/7265e42bruteforce_3_idea.pdf"
+            fileset
           }
           filename={fileset}
         />

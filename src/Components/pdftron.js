@@ -1,14 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import WebViewer from "@pdftron/webviewer";
 
-const Pdftron = () => {
+const Pdftron = (props) => {
   const Viewdiv = useRef(null);
   useEffect(() => {
     WebViewer(
       {
         path: "lib",
-        initialDoc:
-          "https://v2.convertapi.com/d/o0l72eqxjnzp9suws3e0djzlzuqtmjju/7265e42bruteforce_3_idea.pdf",
+        initialDoc:props.url,
       },
       Viewdiv.current
     ).then((instance) => {});

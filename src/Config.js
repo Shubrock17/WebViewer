@@ -41,7 +41,7 @@ const signInWithEmailAndPassword = async (email, password) => {
   try {
     const response=await auth.signInWithEmailAndPassword(email, password);
     console.log(response);
-    console.log(response.user._delegate.auth.email)
+    console.log(response.user._delegate.email)
   } catch (err) {
     console.error(err);
     alert(err.message);
