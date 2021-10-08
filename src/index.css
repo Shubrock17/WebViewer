@@ -12,17 +12,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 ul {
-  margin: 10px;
+  margin: 8px;
   display: flex;
   justify-content: space-between;
   list-style: none;
-  border-bottom: 2px solid #d1d5da;
+  /* border-bottom: 2px solid #d1d5da; */
   margin-bottom: -1px;
+  margin-top: -2%;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 li {

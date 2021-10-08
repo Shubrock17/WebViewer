@@ -23,11 +23,14 @@ const Home = () => {
   };
   const DisplayImagesFromContainer = () => (
     <div>
+      
+      <h1 style={{fontFamily:"georgia",display: "flex",flexDirection: "column",justifyContent: "center",textAlign: "center",height:"0px"}} >List of my files</h1>
       <ul style={{ display: "block" }}>
         {filelist.map((item) => {
           return (
             <>
-              <li
+            
+              <li style={{  listStyle: "square"}}
                 onClick={(event) => {
                   console.log(item.pdfurl);
                   showViewer(item.pdfurl);
@@ -44,19 +47,14 @@ const Home = () => {
 
   return (
     <>
+      
       {!boolean && filelist && DisplayImagesFromContainer()}
       {boolean && fileset && (
-        <div>
-        <Pdftron url={fileset}/>
-      </div>
-      //  <div>
-      //     <Viewer pdf={fileset} filename={fileset} />
-      //   </div>
+          <div>
+            <Pdftron url={fileset} />
+          </div>
       )}
       {console.log(fileset)}
-      {/* <div>
-        <Pdftron url={fileset}/>
-      </div> */}
     </>
   );
 };

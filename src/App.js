@@ -21,6 +21,7 @@ const App = () => {
     </div>
     <div>
       <Header/>
+      <hr/>
       <Main/>
     </div>
     </>

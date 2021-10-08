@@ -21,11 +21,12 @@ const showViewer=(value)=>{
 }
   const DisplayImagesFromContainer = () => (
     <div >
+      <h1 style={{fontFamily:"georgia",display: "flex",flexDirection: "column",justifyContent: "center",textAlign: "center",height:"0px"}} >List of all files</h1>
       <ul style={{display:"block"}}>
         {filelist.map((item) => {
           return (
             <>
-              <li onClick={(event)=>{showViewer(item.pdfurl)}}>{item.name}</li>
+              <li style={{  listStyle: "square"}} onClick={(event)=>{showViewer(item.pdfurl)}}>{item.name}</li>
             </>
           );
         })}
@@ -35,7 +36,6 @@ const showViewer=(value)=>{
 
   return (
     <>
-      <h4>This will show all files from storage</h4>
       {!boolean&&filelist && DisplayImagesFromContainer()}
       {boolean&&
         <div>
