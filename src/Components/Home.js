@@ -52,7 +52,6 @@ const Home = () => {
                   <FontAwesomeIcon icon={faTrashAlt} onClick={(event) => {
                       deletefile(item.name);
                     }} />
-                  <i  class="fas fa-trash-alt"></i>
                   </div>
                 </div>
               </li>
@@ -72,7 +71,6 @@ const Home = () => {
             <Pdftron url={fileset} />
           </div>
       )}
-      {console.log(fileset)}
     </>
   );
 };

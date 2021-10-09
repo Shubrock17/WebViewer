@@ -8,7 +8,7 @@ var convertapi = require("convertapi")("0GUin1JxtDw7KydT");
 
 const storageConfigured = isStorageConfigured();
 const Upload = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [username, setusername] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [fileSelected, setFileSelected] = useState(null);
@@ -23,7 +23,7 @@ const Upload = () => {
   };
 
   //To Convert PPT  into PDF
-  const convert = async (blobsInContainer) => {
+  const convert = async (blobsInContainer,value) => {
     convertapi
       .convert(
         "pdf",
@@ -47,7 +47,8 @@ const Upload = () => {
           name:fileSelected.name,
           user:user._delegate.email,
           pdfurl:pdfurlcloud,
-          ppturl:blobsInContainer
+          ppturl:blobsInContainer,
+          isprivate:value
         }
         axios.post('http://localhost:5000/ppt/',bodytosend).then((resp)=>console.log(resp)).catch((err)=>console.log(err));
       });
@@ -67,7 +68,7 @@ const Upload = () => {
       .catch((err) => console.log(err));
   };
   //PPT upload
-  const onFileUpload = async () => {
+  const onFileUpload = async (value) => {
     if (fileSelected !== null) {
       //If uploaded file is ppt
       //fileSelected.type ==="application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -78,7 +79,7 @@ const Upload = () => {
         setUploading(true);
         setusername(user._delegate.user);
         const blobsInContainer = await uploadFileToBlob(fileSelected);
-        convert(blobsInContainer);
+        convert(blobsInContainer,value);
         if (temp) {
           const pdfurlcloud = await uploadFileToBlob(temp);
           console.log(pdfurlcloud);
@@ -101,8 +102,11 @@ const Upload = () => {
   const DisplayForm = () => (
     <div>
       <input type="file" onChange={onFileChange} />
-      <button type="submit" onClick={onFileUpload}>
-        Upload!
+      <button type="submit" onClick={(event)=>{onFileUpload(true)}}>
+        Upload privately!
+      </button>{"           "}
+      <button type="submit" onClick={(event)=>{onFileUpload(false)}}>
+        Upload for all!
       </button>
     </div>
   );

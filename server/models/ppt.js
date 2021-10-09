@@ -48,6 +48,10 @@ const commentSchema = new Schema(
         type:String,
         required:true
       },
+      isprivate:{
+        type:Boolean,
+        required:true
+      },
       comments: [commentSchema],
     },
     {

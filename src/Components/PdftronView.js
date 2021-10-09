@@ -26,7 +26,7 @@ const showViewer=(value)=>{
         {filelist.map((item) => {
           return (
             <>
-              <li style={{  listStyle: "square"}} onClick={(event)=>{showViewer(item.pdfurl)}}>{item.name}</li>
+              {!item.isprivate&&<li style={{  listStyle: "square"}} onClick={(event)=>{showViewer(item.pdfurl)}}>{item.name}</li>}
             </>
           );
         })}
