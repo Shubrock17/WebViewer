@@ -5,6 +5,7 @@ import Viewer from "../Viewer";
 
 const MyView = () => {
   const [filelist, setfilelist] = useState(null);
+  const [filename, setfilename] = useState(null);
   const [boolean, setboolean] = useState(false);
   useEffect(() => {
     axios
@@ -15,9 +16,10 @@ const MyView = () => {
       .catch((err) => console.log(err));
   }, []);
   const [fileset, setfileset] = useState();
-const showViewer=(value)=>{
+const showViewer=(value,value2)=>{
   setboolean(true);
   setfileset(value);
+  setfilename(value2)
 }
   const DisplayImagesFromContainer = () => (
     <div >
@@ -26,7 +28,7 @@ const showViewer=(value)=>{
         {filelist.map((item) => {
           return (
             <>
-             {!item.isprivate&& <li style={{  listStyle: "square"}} onClick={(event)=>{showViewer(item.pdfurl)}}>{item.name}</li>}
+             {!item.isprivate&& <li style={{  listStyle: "square"}} onClick={(event)=>{showViewer(item.pdfurl,item.name)}}>{item.name}</li>}
             </>
           );
         })}
@@ -42,7 +44,7 @@ const showViewer=(value)=>{
           pdf={
             fileset
           }
-          filename={fileset}
+          filename={filename}
         />
       </div>}
     </>

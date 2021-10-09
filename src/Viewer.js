@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./Comments.scss";
 import CommentBox from "./CommentBox";
 const Viewer = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  useEffect(() => {
+   getComments(pageNumber);
+  }, [pageNumber])
+  const getComments=(pageNumber)=>{
+   return  <CommentBox pptname={props.filename} pageNumber={pageNumber}/>
+  }
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
   }
-  console.log(props);
-  console.log(props.pdf);
   function changePage(offset) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
@@ -87,7 +91,7 @@ const Viewer = (props) => {
             overflow: "auto",
           }}
         >
-          <CommentBox pptname={props.filename} />
+          {getComments(pageNumber)}
         </div>
     </>
   );

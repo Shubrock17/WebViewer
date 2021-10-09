@@ -4,35 +4,36 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import "./Comments.scss";
 
-const CommentBox = (props) => {
+const CommentBox = ({pptname,pageNumber}) => {
   const [showComments, setshowComments] = useState(false);
   const [comments, setcomments] = useState([
     {
       id: 1,
       author: "khushi",
       body: "sample comment",
+      slideid:1
     },
   ]);
   useEffect(() => {
-      axios.get(`http://localhost:5000/ppt/${props.pptname}`).then((resp)=>{console.log(resp);
-
+      axios.get(`http://localhost:5000/ppt/${pptname}`).then((resp)=>{console.log(resp);
       }).catch((err)=>console.log(err));
-  }, [props.pptname])
+  }, [pptname])
   const _addComment = (author, body) => {
     const comment = {
       id: comments.length + 1,
       author,
       body,
+      slideid:pageNumber
     };
     const bodytosend = {
-        pptid:props.pptname,
+        pptid:pptname,
         id: comments.length + 1,
         author:author,
         comment:body,
-        slideid:1
+        slideid:pageNumber
      };
     setcomments((comments) => comments.concat(comment));
-    axios.post(`http://localhost:5000/ppt/${props.pptname}/comments`,bodytosend).then((resp)=>{
+    axios.post(`http://localhost:5000/ppt/${pptname}/comments`,bodytosend).then((resp)=>{
         console.log(resp);
     }).catch((err)=> console.log(err));
   };
@@ -43,20 +44,30 @@ const CommentBox = (props) => {
   const _getComments = () => {
     return comments.map((comment) => {
       return (
-        <Comment author={comment.author} body={comment.body} key={comment.id} />
+        comment.slideid===pageNumber&& <Comment author={comment.author} body={comment.body} key={comment.id} />
       );
     });
   };
+  const getcurrentPageComments=(pageNumber)=>{
+   const length=comments.filter(x => x.slideid===pageNumber).length;
+   if (length === 0) {
+    return "No comments yet";
+  } else if (length === 1) {
+    return "1 comment";
+  } else {
+    return `${length} comments`;
+  }
+  }
 
-  const _getCommentsTitle = (commentCount) => {
-    if (commentCount === 0) {
-      return "No comments yet";
-    } else if (commentCount === 1) {
-      return "1 comment";
-    } else {
-      return `${commentCount} comments`;
-    }
-  };
+  // const _getCommentsTitle = (commentCount) => {
+  //   if (commentCount === 0) {
+  //     return "No comments yet";
+  //   } else if (commentCount === 1) {
+  //     return "1 comment";
+  //   } else {
+  //     return `${commentCount} comments`;
+  //   }
+  // };
   return (
     <div className="comment-box">
       <h2>Add Comments</h2>
@@ -65,7 +76,8 @@ const CommentBox = (props) => {
         {showComments ? "Hide Comments" : "Show Comments"}
       </button>
       <h3>Comments</h3>
-      <h4 className="comment-count">{_getCommentsTitle(comments.length)}</h4>
+      {/* <h4 className="comment-count">{_getCommentsTitle(comments.length)}</h4> */}
+      <h4 className="comment-count">{getcurrentPageComments(pageNumber)}</h4>
       {showComments && (
         <div className="comment-list">
           {comments && comments.length > 0 ? _getComments() : ""}
