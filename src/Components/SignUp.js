@@ -7,6 +7,8 @@ import {
   signInWithGoogle,
 } from "../Config";
 import "../style/SignUp.css";
+
+
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

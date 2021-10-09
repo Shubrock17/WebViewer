@@ -105,10 +105,10 @@ const Upload = () => {
       alert("Select a ppt to upload !");
     }
   };
-  const uploadwlink=()=>{
+  const uploadwlink = () => {
     onFileUpload(false);
     setlink(true);
-  }
+  };
   function copyToClipboard() {
     const el = document.createElement("input");
     el.value = blobList;
@@ -122,6 +122,7 @@ const Upload = () => {
     <div>
       <input type="file" onChange={onFileChange} />
       <button
+        style={{ margin: "1%" }}
         type="submit"
         onClick={(event) => {
           onFileUpload(true);
@@ -131,6 +132,7 @@ const Upload = () => {
       </button>
       {"           "}
       <button
+        style={{ margin: "1%" }}
         type="submit"
         onClick={(event) => {
           onFileUpload(false);
@@ -139,6 +141,7 @@ const Upload = () => {
         Upload for all!
       </button>
       <button
+        style={{ margin: "1%" }}
         type="submit"
         onClick={(event) => {
           uploadwlink();
@@ -157,12 +160,15 @@ const Upload = () => {
       <br />
       {temp && "Your file has been uploaded successfully"}
       <hr />
-      {link &&blobList&& (
+      {link && blobList && (
         <div style={{ display: "flex" }} onClick={copyToClipboard}>
-          <p>{blobList}</p>
-          <br />
-          <FontAwesomeIcon icon={faClipboard}  />
-          {!copied ? "" : "Copied!"}
+          <p style={{ display: "inline" }}>{blobList}</p>
+          {/* <br /> */}
+          <FontAwesomeIcon
+            style={{ padding: "1%", marginLeft: "2%",marginTop:"-1%" ,fontSize: "xx-large" }}
+            icon={faClipboard}
+          />
+          {!copied ? "" : alert("URL copied to clipboard")}
         </div>
       )}
     </>
