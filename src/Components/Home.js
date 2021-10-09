@@ -4,9 +4,9 @@ import axios from "axios";
 import { auth } from "../Config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./Search";
- 
+
 const Home = () => {
   const filterPosts = (posts, query) => {
     if (!query) {
@@ -66,17 +66,25 @@ const Home = () => {
       >
         List of my files
       </h1>
-      <div style={{marginLeft:"2.5%",padding:"1%",marginBottom:"2%"}}>
-          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <div style={{ marginLeft: "2.5%", padding: "1%", marginBottom: "2%" }}>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
-      <ul style={{ display: "block",fontSize: "1.0em",fontWeight:"normal"}}>
+      <ul style={{ display: "block", fontSize: "1.0em", fontWeight: "normal" }}>
         {filteredPosts.map((post) => {
           return (
             <>
-              <li style={{ listStyle: "square" ,paddingTop: "12px",paddingBottom: "0px"}} key={post.key}>
+              <li
+                style={{
+                  listStyle: "square",
+                  paddingTop: "12px",
+                  paddingBottom: "0px",
+                }}
+                key={post.key}
+              >
                 {" "}
-                <div >
-                  <div style={{ display: "inline" ,width:"35%",float:"left"}}
+                <div>
+                  <div
+                    style={{ display: "inline", width: "35%", float: "left" }}
                     onClick={(event) => {
                       console.log(post.pdfurl);
                       showViewer(post.pdfurl);
@@ -84,13 +92,23 @@ const Home = () => {
                   >
                     {post.name}
                   </div>{" "}
-                  <div>
+                  <div
+                    style={{ display: "inline", width: "5%", float: "left" }}
+                  >
                     {/* <button style={{marginLeft:"10%"}}>Delete</button> */}
                     <FontAwesomeIcon
                       icon={faTrashAlt}
                       onClick={(event) => {
                         deletefile(post.name);
                       }}
+                    />
+                  </div>
+                  <div>
+                    <FontAwesomeIcon
+                      icon={faDownload}
+                      // onClick={(event) => {
+                      //   deletefile(post.name);
+                      // }}
                     />
                   </div>
                 </div>
