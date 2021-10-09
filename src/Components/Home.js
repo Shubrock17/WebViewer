@@ -95,7 +95,6 @@ const Home = () => {
                   <div
                     style={{ display: "inline", width: "5%", float: "left" }}
                   >
-                    {/* <button style={{marginLeft:"10%"}}>Delete</button> */}
                     <FontAwesomeIcon
                       icon={faTrashAlt}
                       onClick={(event) => {
@@ -104,12 +103,11 @@ const Home = () => {
                     />
                   </div>
                   <div>
+                  <a href={post.ppturl}download={post.name}>
                     <FontAwesomeIcon
                       icon={faDownload}
-                      // onClick={(event) => {
-                      //   deletefile(post.name);
-                      // }}
                     />
+                    </a>
                   </div>
                 </div>
               </li>

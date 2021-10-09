@@ -4,7 +4,7 @@ import axios from "axios";
 import Viewer from "../Viewer";
 import SearchBar from "./Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faDownload} from "@fortawesome/free-solid-svg-icons";
 
 const MyView = () => {
   const filterPosts = (posts, query) => {
@@ -82,12 +82,11 @@ const MyView = () => {
                     <div
                       style={{ display: "inline", width: "5%", float: "left" }}
                     >
+                      <a href={post.ppturl}download={post.name}>
                       <FontAwesomeIcon
                         icon={faDownload}
-                        // onClick={(event) => {
-                        //   deletefile(post.name);
-                        // }}
                       />
+                      </a>
                     </div>
                 </li>
               )}
