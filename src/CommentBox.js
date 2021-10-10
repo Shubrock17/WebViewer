@@ -65,9 +65,12 @@ const CommentBox = ({ pptname, pageNumber }) => {
       y+=20;
       doc.text(x, y, `Time : ${comment.updatedAt}`);
       y+=20;
+      doc.text(x,y,'');
+      y+=20;
     })
     doc.setFont("helvetica");
     doc.save("sample-file.pdf");
+
   })
   };
   const _getComments = () => {
