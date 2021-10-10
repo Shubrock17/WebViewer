@@ -20,7 +20,7 @@ const Upload = () => {
   const [inputKey, setInputKey] = useState(Math.random().toString(36));
   const [fileset, setfileset] = useState();
   const [temp, settemp] = useState();
-  console.log(user._delegate.email);
+
   const onFileChange = (event) => {
     setFileSelected(event.target.files[0]);
     setfileset(event.target.files[0].name);
@@ -74,6 +74,7 @@ const Upload = () => {
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
   };
+
   //PPT upload
   const onFileUpload = async (value) => {
     if (fileSelected !== null) {
@@ -89,7 +90,6 @@ const Upload = () => {
         convert(blobsInContainer, value);
         if (temp) {
           const pdfurlcloud = await uploadFileToBlob(temp);
-          console.log(pdfurlcloud);
           pdfurlcloud && send2backend(blobsInContainer, pdfurlcloud);
         }
         setBlobList(blobsInContainer);
@@ -97,6 +97,7 @@ const Upload = () => {
         setInputKey(Math.random().toString(36));
         setFileSelected(null);
       }
+
       //If uploaded file is not a ppt
       else {
         alert("Invalid File Type! Please select ppt to upload.");
@@ -109,6 +110,8 @@ const Upload = () => {
     onFileUpload(false);
     setlink(true);
   };
+
+  //copy the file link to the clipboard
   function copyToClipboard() {
     const el = document.createElement("input");
     el.value = blobList;
@@ -118,6 +121,8 @@ const Upload = () => {
     document.body.removeChild(el);
     setCopied(true);
   }
+
+  //Options of uploading file differently
   const DisplayForm = () => (
     <div>
       <input type="file" onChange={onFileChange} />
@@ -163,9 +168,13 @@ const Upload = () => {
       {link && blobList && (
         <div style={{ display: "flex" }} onClick={copyToClipboard}>
           <p style={{ display: "inline" }}>{blobList}</p>
-          {/* <br /> */}
           <FontAwesomeIcon
-            style={{ padding: "1%", marginLeft: "2%",marginTop:"-1%" ,fontSize: "xx-large" }}
+            style={{
+              padding: "1%",
+              marginLeft: "2%",
+              marginTop: "-1%",
+              fontSize: "xx-large",
+            }}
             icon={faClipboard}
           />
           {!copied ? "" : alert("URL copied to clipboard")}

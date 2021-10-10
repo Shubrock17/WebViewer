@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import "../style/Dashboard.css";
 import { auth, db, logout } from "../Config";
+
+//Getting user data after authentication
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
   const [name, setName] = useState("");

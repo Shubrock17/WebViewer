@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
-import "firebase/compat/auth"
-import "firebase/compat/firestore"
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBgf_i1hnRNd3Vr-UUwv3JFsMYOx3-krVo",
@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "auth-development-9f076",
   storageBucket: "auth-development-9f076.appspot.com",
   messagingSenderId: "737749225760",
-  appId: "1:737749225760:web:deedaa24ab72af00224745"
+  appId: "1:737749225760:web:deedaa24ab72af00224745",
 };
 
 // Initialize Firebase
@@ -39,9 +39,7 @@ const signInWithGoogle = async () => {
 };
 const signInWithEmailAndPassword = async (email, password) => {
   try {
-    const response=await auth.signInWithEmailAndPassword(email, password);
-    console.log(response);
-    console.log(response.user._delegate.email)
+    const response = await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -74,7 +72,6 @@ const sendPasswordResetEmail = async (email) => {
 const logout = () => {
   auth.signOut();
 };
-
 
 export {
   auth,

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./Search";
 
+//Renders user personal files 
 const Home = () => {
   const filterPosts = (posts, query) => {
     if (!query) {
@@ -28,6 +29,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState(query || "");
   const filteredPosts = filterPosts(filelist, searchQuery);
 
+  //deletes the file from the server
   const deletefile = (item) => {
     axios
       .delete(`http://localhost:5000/ppt/${item}`)
@@ -52,6 +54,7 @@ const Home = () => {
     setfileset(value);
   };
 
+  //List all the files uploaded by the user to the server 
   const DisplayImagesFromContainer = () => (
     <div>
       <h1
@@ -86,7 +89,6 @@ const Home = () => {
                   <div
                     style={{ display: "inline", width: "35%", float: "left" }}
                     onClick={(event) => {
-                      console.log(post.pdfurl);
                       showViewer(post.pdfurl);
                     }}
                   >
@@ -103,10 +105,8 @@ const Home = () => {
                     />
                   </div>
                   <div>
-                  <a href={post.ppturl}download={post.name}>
-                    <FontAwesomeIcon
-                      icon={faDownload}
-                    />
+                    <a href={post.ppturl} download={post.name}>
+                      <FontAwesomeIcon icon={faDownload} />
                     </a>
                   </div>
                 </div>

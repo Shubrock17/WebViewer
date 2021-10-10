@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
+//Redirect to each page from header 
 class Navbar extends Component {
   handleClick = () => this.props.onClick(this.props.index)
 

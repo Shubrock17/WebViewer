@@ -6,6 +6,8 @@ import SearchBar from "./Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload} from "@fortawesome/free-solid-svg-icons";
 
+
+//Display all the files using our own viewer 
 const MyView = () => {
   const filterPosts = (posts, query) => {
     if (!query) {
@@ -30,7 +32,6 @@ const MyView = () => {
     axios
       .get("http://localhost:5000/ppt")
       .then((resp) => {
-        console.log(resp.data);
         setfilelist(resp.data);
       })
       .catch((err) => console.log(err));

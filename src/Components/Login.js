@@ -3,20 +3,23 @@ import { Link, useHistory } from "react-router-dom";
 import { auth, signInWithEmailAndPassword, signInWithGoogle } from "../Config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "../style/Login.css";
+
+//Login Page for authentication
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading,] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const history = useHistory();
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
       return;
     }
-    if (user) history.replace('/myhome');
+    if (user) history.replace("/myhome");
   }, [user, loading]);
   return (
     <div className="login">
+      <h1>PPT WebViewer</h1>
       <div className="login__container">
         <input
           type="text"
