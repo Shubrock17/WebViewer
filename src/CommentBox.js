@@ -3,6 +3,7 @@ import axios from "axios";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import "./Comments.scss";
+import jsPDF from "jspdf";
 
 //Comment box for our view
 const CommentBox = ({ pptname, pageNumber }) => {
@@ -46,7 +47,29 @@ const CommentBox = ({ pptname, pageNumber }) => {
   const _handleClick = () => {
     setshowComments(!showComments);
   };
-
+  const test = () => {
+    axios.get("http://localhost:5000/ppt/Final_Idea Submission Template_Hackpions edition 3_8d458c00e4f07f.pptx/comments").then((resp)=>{
+    var obj;
+    obj = resp.data;
+    console.log(resp.data[0]);
+    var doc = new jsPDF("p", "pt");
+    doc.text(250, 20, "Comments");
+    let x=20;
+    let y=60;
+    obj.map((comment) => {
+      doc.text(x, y, `Comment : ${comment.comment}`);
+      y+=20;
+      doc.text(x, y, `Author : ${comment.author}`);
+      y+=20;
+      doc.text(x, y, `SlideId : ${comment.slideid}`);
+      y+=20;
+      doc.text(x, y, `Time : ${comment.updatedAt}`);
+      y+=20;
+    })
+    doc.setFont("helvetica");
+    doc.save("sample-file.pdf");
+  })
+  };
   const _getComments = () => {
     return comments.map((comment) => {
       return (
@@ -72,20 +95,23 @@ const CommentBox = ({ pptname, pageNumber }) => {
   };
 
   return (
-    <div className="comment-box">
-      <h2>Add Comments</h2>
-      <CommentForm addComment={_addComment} />
-      <button id="comment-reveal" onClick={_handleClick}>
-        {showComments ? "Hide Comments" : "Show Comments"}
-      </button>
-      <h3>Comments</h3>
-      <h4 className="comment-count">{getcurrentPageComments(pageNumber)}</h4>
-      {showComments && (
-        <div className="comment-list">
-          {comments && comments.length > 0 ? _getComments() : ""}
-        </div>
-      )}
-    </div>
+    <>
+      <button onClick={test}>Test</button>
+      <div className="comment-box">
+        <h2>Add Comments</h2>
+        <CommentForm addComment={_addComment} />
+        <button id="comment-reveal" onClick={_handleClick}>
+          {showComments ? "Hide Comments" : "Show Comments"}
+        </button>
+        <h3>Comments</h3>
+        <h4 className="comment-count">{getcurrentPageComments(pageNumber)}</h4>
+        {showComments && (
+          <div className="comment-list">
+            {comments && comments.length > 0 ? _getComments() : ""}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 export default CommentBox;
