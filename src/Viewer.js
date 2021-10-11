@@ -52,19 +52,16 @@ const Viewer = (props) => {
 
   //merge pdfs (adding comments pdf)
   const merge = async (files) => {
-
     const merger = new PDFMerger();
     await Promise.all(files.map(async (file) => await merger.add(file)));
     const mergedPdf = await merger.saveAsBlob();
     const url = URL.createObjectURL(mergedPdf);
-    // console.log(mergedPdf);
-    // console.log(url);
 
-    var mergedpdf = new Blob([mergedPdf], { type: 'application/pdf' });
-    console.log(mergedpdf);
-    
+    // var mergedpdf = new Blob([mergedPdf], "name");
+    // console.log(mergedPdfUrl);
     setMergedPdfUrl(url);
   };
+
   const test = async () => {
     axios
       .get(`http://localhost:5000/ppt/${props.filename}/comments`)
@@ -98,12 +95,10 @@ const Viewer = (props) => {
         });
         //converting our pdf file to blob
         let blob = await fetch(props.pdf).then((r) => r.blob());
-
         // doc.save(`${props.filename}.pdf`);
-        
+
         //pdfs to be merged
         var files = [blob, blobPDF];
-        //console.log(files);
         merge(files);
       });
   };
@@ -143,7 +138,11 @@ const Viewer = (props) => {
         </button>
       </div>
       <div>
-      <button style={{marginTop:"-1%",marginLeft:"2%"}}onClick={test}>Download PPT</button>
+        <a href={mergedPdfUrl} download={"name"}>
+          <button style={{ marginTop: "-1%", marginLeft: "2%" }} onClick={test}>
+            Download PPT
+          </button>
+        </a>
       </div>
       <div
         style={{
@@ -157,7 +156,6 @@ const Viewer = (props) => {
         {getComments(pageNumber)}
       </div>
     </>
-
   );
 };
 
