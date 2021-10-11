@@ -11,7 +11,7 @@ const CommentBox = ({ pptname, pageNumber }) => {
     axios
       .get(`http://localhost:5000/ppt/${pptname}/comments`)
       .then((resp) => {
-        console.log(resp.data);
+        // console.log(resp.data);
         resp.data.map((comment) => {
           let mycomm = {
             id: comment.id,

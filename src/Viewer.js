@@ -4,12 +4,14 @@ import "./Comments.scss";
 import CommentBox from "./CommentBox";
 import jsPDF from "jspdf";
 import axios from "axios";
-const PDFMerger = require("pdf-merger-js");
+import PDFMerger from "pdf-merger-js/browser";
 
 //Viewer for my view
 const Viewer = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [mergedPdfUrl, setMergedPdfUrl] = useState();
+
   useEffect(() => {
     getComments(pageNumber);
   }, [pageNumber]);
@@ -47,13 +49,28 @@ const Viewer = (props) => {
       }
     }
   };
-  const test = () => {
+
+  //merge pdfs (adding comments pdf)
+  const merge = async (files) => {
+
+    const merger = new PDFMerger();
+    await Promise.all(files.map(async (file) => await merger.add(file)));
+    const mergedPdf = await merger.saveAsBlob();
+    const url = URL.createObjectURL(mergedPdf);
+    // console.log(mergedPdf);
+    // console.log(url);
+
+    var mergedpdf = new Blob([mergedPdf], { type: 'application/pdf' });
+    console.log(mergedpdf);
+    
+    setMergedPdfUrl(url);
+  };
+  const test = async () => {
     axios
       .get(`http://localhost:5000/ppt/${props.filename}/comments`)
-      .then((resp) => {
+      .then(async (resp) => {
         var obj;
         obj = resp.data;
-        console.log(resp.data[0]);
         var doc = new jsPDF("p", "pt");
         doc.text(250, 20, "Comments");
         let x = 20;
@@ -69,14 +86,25 @@ const Viewer = (props) => {
           y += 20;
           doc.text(x, y, "");
           y += 20;
-          if (y>=720) {
+          if (y >= 720) {
             doc.addPage();
             doc.setFont("helvetica");
             y = 60;
           }
         });
         doc.setFont("helvetica");
-        doc.save(`${props.filename}.pdf`);
+        var blobPDF = new Blob([doc.output("blob")], {
+          type: "application/pdf",
+        });
+        //converting our pdf file to blob
+        let blob = await fetch(props.pdf).then((r) => r.blob());
+
+        // doc.save(`${props.filename}.pdf`);
+        
+        //pdfs to be merged
+        var files = [blob, blobPDF];
+        //console.log(files);
+        merge(files);
       });
   };
   const pdf = props.pdf;
