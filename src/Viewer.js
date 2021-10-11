@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./Comments.scss";
 import CommentBox from "./CommentBox";
+import jsPDF from "jspdf";
+import axios from "axios";
+const PDFMerger = require("pdf-merger-js");
 
-//Viewer for my view 
+//Viewer for my view
 const Viewer = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -44,10 +47,42 @@ const Viewer = (props) => {
       }
     }
   };
-
+  const test = () => {
+    axios
+      .get(`http://localhost:5000/ppt/${props.filename}/comments`)
+      .then((resp) => {
+        var obj;
+        obj = resp.data;
+        console.log(resp.data[0]);
+        var doc = new jsPDF("p", "pt");
+        doc.text(250, 20, "Comments");
+        let x = 20;
+        let y = 60;
+        obj.map((comment) => {
+          doc.text(x, y, `Comment : ${comment.comment}`);
+          y += 20;
+          doc.text(x, y, `Author : ${comment.author}`);
+          y += 20;
+          doc.text(x, y, `SlideId : ${comment.slideid}`);
+          y += 20;
+          doc.text(x, y, `Time : ${comment.updatedAt}`);
+          y += 20;
+          doc.text(x, y, "");
+          y += 20;
+          if (y>=720) {
+            doc.addPage();
+            doc.setFont("helvetica");
+            y = 60;
+          }
+        });
+        doc.setFont("helvetica");
+        doc.save(`${props.filename}.pdf`);
+      });
+  };
   const pdf = props.pdf;
   return (
     <>
+      <button onClick={test}>Download PPT</button>
       <div
         style={{ float: "left", width: "60%", margin: "2%", height: "100%" }}
       >
