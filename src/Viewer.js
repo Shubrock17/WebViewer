@@ -5,6 +5,8 @@ import CommentBox from "./CommentBox";
 import jsPDF from "jspdf";
 import axios from "axios";
 import PDFMerger from "pdf-merger-js/browser";
+import uploadFileToBlob from "./azureUpload";
+var convertapi = require("convertapi")("0GUin1JxtDw7KydT");
 
 //Viewer for my view
 const Viewer = (props) => {
@@ -55,13 +57,20 @@ const Viewer = (props) => {
     const merger = new PDFMerger();
     await Promise.all(files.map(async (file) => await merger.add(file)));
     const mergedPdf = await merger.saveAsBlob();
-    const url = URL.createObjectURL(mergedPdf);
-
-    // var mergedpdf = new Blob([mergedPdf], "name");
-    // console.log(mergedPdfUrl);
-    setMergedPdfUrl(url);
+    //const url = URL.createObjectURL(mergedPdf);
+    //var mergedpdf = new Blob([mergedPdf], { type: 'application/pdf' });
+    const pdfurlcloud = await uploadFileToBlob(mergedPdf);
+    console.log(pdfurlcloud);
+    const resultfinal = await convertapi.convert(
+      "pptx",
+      {
+        File: pdfurlcloud,
+      },
+      "pdf"
+    );
+    console.log(resultfinal.response.Files[0].Url);
+    setMergedPdfUrl(resultfinal.response.Files[0].Url);
   };
-
   const test = async () => {
     axios
       .get(`http://localhost:5000/ppt/${props.filename}/comments`)
@@ -95,8 +104,6 @@ const Viewer = (props) => {
         });
         //converting our pdf file to blob
         let blob = await fetch(props.pdf).then((r) => r.blob());
-        // doc.save(`${props.filename}.pdf`);
-
         //pdfs to be merged
         var files = [blob, blobPDF];
         merge(files);
@@ -138,7 +145,7 @@ const Viewer = (props) => {
         </button>
       </div>
       <div>
-        <a href={mergedPdfUrl} download={"name"}>
+        <a href={mergedPdfUrl} download={`${props.filename}`}>
           <button style={{ marginTop: "-1%", marginLeft: "2%" }} onClick={test}>
             Download PPT
           </button>
