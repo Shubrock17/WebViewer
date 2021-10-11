@@ -110,7 +110,6 @@ const Viewer = (props) => {
   const pdf = props.pdf;
   return (
     <>
-      <button onClick={test}>Download PPT</button>
       <div
         style={{ float: "left", width: "60%", margin: "2%", height: "100%" }}
       >
@@ -143,18 +142,22 @@ const Viewer = (props) => {
           Next
         </button>
       </div>
+      <div>
+      <button style={{marginTop:"-1%",marginLeft:"2%"}}onClick={test}>Download PPT</button>
+      </div>
       <div
         style={{
           float: "left",
           margin: "2%",
-          height: "440px",
-          marginTop: "-1%",
+          height: "380px",
+          marginTop: "1%",
           overflow: "auto",
         }}
       >
         {getComments(pageNumber)}
       </div>
     </>
+
   );
 };
 
