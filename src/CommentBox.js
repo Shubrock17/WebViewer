@@ -39,6 +39,7 @@ const CommentBox = ({ pptname, pageNumber, numPages }) => {
       author: author,
       comment: body,
       slideid: pageNumber,
+      isaccepted:false
     };
     setcomments((comments) => comments.concat(comment));
     axios

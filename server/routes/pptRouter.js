@@ -196,26 +196,30 @@ PPTRouter.route("/user/:pptid/commentsreq").put((req, res, next) => {
     res.setHeader("Content-Type", "application/json");
     res.json(resp);
   });
-  // PPT.find({name:req.params.pptid }).then((ppts)=>{
-  //   res.statusCode = 200;
-  //   res.setHeader("Content-Type", "application/json");
-  //   let idx=ppts[0].comments.findIndex(comment => comment.id ===req.body.id);
-  //   console.log(idx);
-  //   PPT.updateOne({name:req.params.pptid}, { $set:{'comments[$[outer]].isaccepted':true}},{
-  //     arrayFilters: [{ 'outer': idx}],
-  //    })
-  //   .then(
-  //     (ppt) => {
-  //       res.statusCode = 200;
-  //       console.log(ppt);
-  //       res.setHeader("Content-Type", "application/json");
-  //       res.json(ppt);
-  //     },
-  //     (err) => next(err)
-  //   )
-  //   .catch((err) => next(err));
-
-  // },(err)=>next(err)).catch((err)=>next(err));
+}).delete((req, res, next) => {
+  PPT.findOne({ name: req.params.pptid })
+    .then(
+      (ppt) => {
+        if (ppt != null) {
+          let idx=ppt.comments.findIndex(x => x.id ===req.body.id);
+          ppt.comments[idx].remove();
+          ppt.save().then(
+            (ppt) => {
+              res.statusCode = 200;
+              res.setHeader("Content-Type", "application/json");
+              res.json(ppt);
+            },
+            (err) => next(err)
+          );
+        } else {
+          err = new Error("ppt " + req.params.pptid + " not found");
+          err.status = 404;
+          return next(err);
+        }
+      },
+      (err) => next(err)
+    )
+    .catch((err) => next(err));
 });
 
 module.exports = PPTRouter;
