@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./Search";
+import Notificaton from "./Notificaton";
 
 //Renders user personal files 
 const Home = () => {
@@ -22,6 +23,7 @@ const Home = () => {
 
   const [user] = useAuthState(auth);
   const [filelist, setfilelist] = useState(null);
+  const [notifications, setnotifications] = useState([]);
   const [fileset, setfileset] = useState();
   const [boolean, setboolean] = useState(false);
   const { search } = window.location;
@@ -46,17 +48,39 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
+  const callbackend2 = () => {
+    axios
+      .get(`http://localhost:5000/ppt/user/${user._delegate.email}/commentsreq`)
+      .then((resp) => {
+        setnotifications(resp.data);
+        console.log(resp.data);
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     callbackend();
+    callbackend2();
+
   }, [user]);
   const showViewer = (value) => {
     setboolean(true);
     setfileset(value);
   };
 
+
   //List all the files uploaded by the user to the server 
   const DisplayImagesFromContainer = () => (
     <div>
+      <div>
+        <h1>Comment Notifications</h1>
+        {
+          notifications.map((resp)=>{
+            return resp.map((item)=>{
+              return <><Notificaton comment={item.comment} author={item.author} id={item.id} pptid={item.pptid} slide={item.slideid}/><br/></> 
+            })
+          })
+        }
+      </div>
       <h1
         style={{
           fontFamily: "georgia",

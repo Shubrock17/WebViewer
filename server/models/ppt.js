@@ -25,6 +25,10 @@ const commentSchema = new Schema(
       type: Number,
       required: true,
     },
+    isaccepted:{
+      type:Boolean,
+      required:true
+    }
   },
   {
     timestamps: true,
