@@ -4,9 +4,11 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import "./Comments.scss";
 //Comment box for our view
-const CommentBox = ({ pptname, pageNumber }) => {
+const CommentBox = ({ pptname, pageNumber, numPages }) => {
   const [showComments, setshowComments] = useState(false);
   const [comments, setcomments] = useState([]);
+  const [flag, setflag] = useState(false);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/ppt/${pptname}/comments`)
@@ -64,6 +66,7 @@ const CommentBox = ({ pptname, pageNumber }) => {
   };
   const getcurrentPageComments = (pageNumber) => {
     const length = comments.filter((x) => x.slideid === pageNumber).length;
+
     if (length === 0) {
       return "No comments yet";
     } else if (length === 1) {
@@ -73,9 +76,37 @@ const CommentBox = ({ pptname, pageNumber }) => {
     }
   };
 
+  const checkComments = (pageNumber) => {
+    const length = comments.filter((x) => x.slideid === pageNumber).length;
+    if (length === 0) {
+      setflag(false);
+    } else {
+      setflag(true);
+    }
+  };
+
+  useEffect(() => {
+    checkComments(pageNumber);
+  }, [pageNumber]);
+
   return (
     <>
-      <div className="comment-box">
+      <p>
+        Page{" "}
+        <span className={flag ? "redclass" : " "}>
+          {" "}
+          {pageNumber || (numPages ? 1 : "--")}
+        </span>{" "}
+        of {numPages || "--"}
+      </p>
+
+      <div className="comment-box" style={{
+          float: "left",
+          margin: "2%",
+          height: "400px",
+          marginTop: "1%",
+          overflow: "auto",
+        }}>
         <h2>Add Comments</h2>
         <CommentForm addComment={_addComment} />
         <button id="comment-reveal" onClick={_handleClick}>

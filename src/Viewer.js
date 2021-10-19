@@ -17,13 +17,14 @@ const Viewer = (props) => {
   useEffect(() => {
     getComments(pageNumber);
   }, [pageNumber]);
-  const getComments = (pageNumber) => {
-    return <CommentBox pptname={props.filename} pageNumber={pageNumber} />;
-  };
+  
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
   }
+  const getComments = (pageNumber) => {
+    return <CommentBox pptname={props.filename} pageNumber={pageNumber} numPages={numPages}/>;
+  };
   function changePage(offset) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
@@ -112,6 +113,13 @@ const Viewer = (props) => {
   const pdf = props.pdf;
   return (
     <>
+     <div>
+        <a href={mergedPdfUrl} download={`${props.filename}`}>
+          <button style={{ marginTop: "1%", marginLeft: "2%" }} onClick={test}>
+            Download PPT
+          </button>
+        </a>
+      </div>
       <div
         style={{ float: "left", width: "60%", margin: "2%", height: "100%" }}
       >
@@ -123,10 +131,7 @@ const Viewer = (props) => {
           <Page pageNumber={pageNumber} />
         </Document>
       </div>
-      <div style={{ float: "left", width: "30%", margin: "2%" }}>
-        <p>
-          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-        </p>
+      <div style={{ float: "left", width: "30%", margin: "2%" ,marginBottom:"-1%" }}>
         <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
           Previous
         </button>
@@ -144,20 +149,13 @@ const Viewer = (props) => {
           Next
         </button>
       </div>
-      <div>
-        <a href={mergedPdfUrl} download={`${props.filename}`}>
-          <button style={{ marginTop: "-1%", marginLeft: "2%" }} onClick={test}>
-            Download PPT
-          </button>
-        </a>
-      </div>
       <div
         style={{
           float: "left",
           margin: "2%",
           height: "380px",
           marginTop: "1%",
-          overflow: "auto",
+          // overflow: "auto",
         }}
       >
         {getComments(pageNumber)}
