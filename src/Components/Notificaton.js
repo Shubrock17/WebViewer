@@ -19,7 +19,7 @@ const Notificaton = ({ comment, author, id, pptid, slide }) => {
   const rejectComment = () => {
     const body = { id: id };
     axios
-      .delete(`http://localhost:5000/ppt/user/${pptid}/commentsreq`, body)
+      .delete(`http://localhost:5000/ppt/user/${pptid}/commentsreq`,  { data: body })
       .then((resp) => {
         setflag1(false);
         console.log(resp.data);

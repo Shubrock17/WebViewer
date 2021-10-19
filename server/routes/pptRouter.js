@@ -201,7 +201,9 @@ PPTRouter.route("/user/:pptid/commentsreq").put((req, res, next) => {
     .then(
       (ppt) => {
         if (ppt != null) {
+          console.log(ppt);
           let idx=ppt.comments.findIndex(x => x.id ===req.body.id);
+          console.log(idx);
           ppt.comments[idx].remove();
           ppt.save().then(
             (ppt) => {
