@@ -20,14 +20,15 @@ const Notificaton = ({comment,author,id,pptid,slide}) => {
 
   }
   return (
-    <div style={flag?({}):({display:"none"})}>
-      <div className="recommendation border-box">
-      <div className="text-center" style={{ height: "50px" }}>{author}</div>
-        <div className="text-center" style={{ height: "50px" }}>{comment}</div>
-        <div className="text-center" style={{ height: "50px" }}>{pptid}</div>
-        <div className="text-center" style={{ height: "50px" }}>{slide}</div>
+
+        <div style={flag?({}):({display:"none"})}>
+        <div className="recommendation border-box" style={{width:"40%" ,border:"3px solid black", borderRadius:"5%"}}>
+        <div className="text-center" style={{ margin:"2%"  }}>Commentor : {author}</div>
+        <div className="text-center" style={{ margin:"2%" }}>Suggesttion : {comment}</div>
+        <div className="text-center" style={{ margin:"2%" }}>PPT Name : {pptid}</div>
+        <div className="text-center" style={{ margin:"2%" }}>Slide Id : {slide}</div>
         <div className="buttons">
-          <button
+          <button style={{ margin:"2%" }}
             type="button"
             onClick={() => {
               acceptComment();
