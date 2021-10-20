@@ -4,10 +4,11 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import "./Comments.scss";
 //Comment box for our view
-const CommentBox = ({ pptname, pageNumber, numPages }) => {
+const CommentBox = ({ pptname, pageNumber, numPages,currentuser,pptuser }) => {
   const [showComments, setshowComments] = useState(false);
   const [comments, setcomments] = useState([]);
   const [flag, setflag] = useState(false);
+  const [isaf, setisaf] = useState(false);
 
   useEffect(() => {
     axios
@@ -33,13 +34,16 @@ const CommentBox = ({ pptname, pageNumber, numPages }) => {
       body,
       slideid: pageNumber,
     };
+    if(currentuser===pptuser){
+      setisaf(true);
+    }
     const bodytosend = {
       pptid: pptname,
       id: comments.length + 1,
       author: author,
       comment: body,
       slideid: pageNumber,
-      isaccepted:false
+      isaccepted:isaf
     };
     setcomments((comments) => comments.concat(comment));
     axios

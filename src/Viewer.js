@@ -174,6 +174,8 @@ const Viewer = (props) => {
         pptname={props.filename}
         pageNumber={pageNumber}
         numPages={numPages}
+        currentuser={props.currentuser}
+        pptuser={props.pptuser}
       />
     );
   };

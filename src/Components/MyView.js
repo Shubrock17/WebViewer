@@ -5,10 +5,12 @@ import Viewer from "../Viewer";
 import SearchBar from "./Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload} from "@fortawesome/free-solid-svg-icons";
-
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../Config";
 //Display all the files using our own viewer 
 const MyView = () => {
+  const [currentuser] = useAuthState(auth);
+  const [pptuser, setpptuser] = useState("");
   const filterPosts = (posts, query) => {
     if (!query) {
       return posts;
@@ -37,10 +39,11 @@ const MyView = () => {
       .catch((err) => console.log(err));
   }, []);
   const [fileset, setfileset] = useState();
-  const showViewer = (value, value2) => {
+  const showViewer = (value, value2,value3) => {
     setboolean(true);
     setfileset(value);
     setfilename(value2);
+    setpptuser(value3)
   };
   const DisplayImagesFromContainer = () => (
     <div>
@@ -75,7 +78,7 @@ const MyView = () => {
                     <div
                       style={{ display: "inline", width: "50%", float: "left"}}
                       onClick={(event) => {
-                        showViewer(post.pdfurl, post.name);
+                        showViewer(post.pdfurl, post.name,post.user);
                       }}
                     >
                       {post.name}
@@ -97,13 +100,13 @@ const MyView = () => {
       </ul>
     </div>
   );
-
+  console.log(filelist);
   return (
     <>
       {!boolean && filelist && DisplayImagesFromContainer()}
       {boolean && (
         <div>
-          <Viewer pdf={fileset} filename={filename} />
+          <Viewer pdf={fileset} filename={filename} currentuser={currentuser._delegate.email} pptuser={pptuser} />
         </div>
       )}
     </>
