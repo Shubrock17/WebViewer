@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const swaggerUi = require('swagger-ui-express'),
+swaggerDocument = require('./swagger.json');
 const cors = require("cors");
 const app = express();
 const port = 5000;
@@ -20,4 +22,5 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 module.exports = app;

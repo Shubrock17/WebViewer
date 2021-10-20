@@ -1,0 +1,190 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Endpoint to display working of all APIs",
+    "description": "Endpoint to display working of all APIs",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:5000",
+  "basePath": "/ppt",
+  "tags": [
+    {
+      "name": "PPT",
+      "description": "API for all PPTs in the system"
+    }
+  ],
+  "schemes": ["http","https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/ppt": {
+      "post": {
+        "tags": ["PPT"],
+        "summary": "Add a ppt in the system",
+        "description": "Add entry for new ppt in the database",
+        "parameters": [
+            {
+                "name": "name",
+                "in": "body",
+                "required": true,
+                "description": "PPT name that we want to insert",
+                "type": "string"
+            },
+            {
+                "name": "userid",
+                "in": "body",
+                "required": true,
+                "description": "User who is adding the ppt",
+                "type": "string"
+            }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New ppt is added to the system",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["PPT"],
+        "summary": "Get all PPTs in the system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags": ["PPT"],
+        "summary": "Deletes all PPTs int the system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      }
+    },
+    "/ppt/{pptId}": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of user that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user with given ID",
+        "responses": {
+          "200": {
+            "description": "User is found",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user with given ID",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "User is deleted",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user with give ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PPT": {
+      "required": ["name", "user", "ppturl", "pdfurl", "isprivate"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "ppturl": {
+          "type": "string"
+        },
+        "pdfurl": {
+          "type": "string"
+        },
+        "isprivate": {
+          "type": "boolean"
+        },
+        "comments": {
+          "type": "array",
+          "$ref": "#/definitions/comment"
+        }
+      }
+    },
+    "comment": {
+      "required": ["comment", "id", "author", "pptid", "slideid", "isaccepted"],
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "author": {
+          "type": "string"
+        },
+        "author_id": {
+          "type": "string"
+        },
+        "pptid": {
+          "type": "string"
+        },
+        "slideid": {
+          "type": "number"
+        },
+        "isaccepted": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
