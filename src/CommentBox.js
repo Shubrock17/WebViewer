@@ -46,7 +46,7 @@ const CommentBox = ({ pptname, pageNumber, numPages,currentuser,pptuser }) => {
       axios
       .post(`http://localhost:5000/ppt/${pptname}/comments`, bodytosend)
       .then((resp) => {
-        console.log(resp);
+        // console.log(resp);
       })
       .catch((err) => console.log(err));
     }
@@ -62,7 +62,7 @@ const CommentBox = ({ pptname, pageNumber, numPages,currentuser,pptuser }) => {
       axios
       .post(`http://localhost:5000/ppt/${pptname}/comments`, bodytosend)
       .then((resp) => {
-        console.log(resp);
+        // console.log(resp);
       })
       .catch((err) => console.log(err));
     }

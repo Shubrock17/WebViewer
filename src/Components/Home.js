@@ -53,7 +53,7 @@ const Home = () => {
       .get(`http://localhost:5000/ppt/user/${user._delegate.email}/commentsreq`)
       .then((resp) => {
         setnotifications(resp.data);
-        console.log(resp.data);
+        // console.log(resp.data);
       })
       .catch((err) => console.log(err));
   };

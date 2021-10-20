@@ -100,7 +100,6 @@ const MyView = () => {
       </ul>
     </div>
   );
-  console.log(filelist);
   return (
     <>
       {!boolean && filelist && DisplayImagesFromContainer()}

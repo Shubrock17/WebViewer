@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./Comments.scss";
 import CommentBox from "./CommentBox";
@@ -14,151 +14,137 @@ const Viewer = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [mergedPdfUrl, setMergedPdfUrl] = useState();
   const [wordSearch, setWordSearch] = useState(false);
+  const [input, setInput] = useState('');
+  const nameForm=useRef(null);
+  // console.log(props);
 
-  console.log(props);
+  const Replaceword = (event) => {
+    event.preventDefault();
+    const form=nameForm.current ;
+    console.log(form['name'].value);
 
-  var https = require("https");
+    var https = require("https");
+    var request = require("request");
+    const API_KEY =
+      "prabhdeep.20516401518@ipu.ac.in_1dbb8b5bc8d505188c1c90c6e6a166144ef6";
 
-  // Use "npm install request" command to install.
-  var request = require("request");
+    // Direct URL of source PDF file.
+    const SourceFileUrl = props.pdf;
+    // Comma-separated list of page indices (or ranges) to process. Leave empty for all pages. Example: '0,2-5,7-'.
+    const Pages = "0-1";
+    // PDF document password. Leave empty for unprotected documents.
+    const Password = "";
+    // Search string.
+    const SearchString = `${form['name'].value}`;
+    // Enable regular expressions (Regex)
+    const RegexSearch = true;
 
-  // The authentication key (API Key).
-  // Get your own by registering at https://app.pdf.co
-  const API_KEY =
-    "saurabh.20316401518@ipu.ac.in_8688c55467178a049f571a3f7def028192ba";
-
-  // Direct URL of source PDF file.
-  // You can also upload your own file into PDF.co and use it as url. Check "Upload File" samples for code snippets: https://github.com/bytescout/pdf-co-api-samples/tree/master/File%20Upload/
-  const SourceFileUrl =
-    "https://bruteforce3.blob.core.windows.net/data/file(5).pdf";
-
-  // Comma-separated list of page indices (or ranges) to process. Leave empty for all pages. Example: '0,2-5,7-'.
-  const Pages = "2-4";
-  // PDF document password. Leave empty for unprotected documents.
-  const Password = "";
-
-  // Search string.
-  const SearchString = "to"; // Regular expression to find numbers in format dd.dd and between 40.00 to 99.99
-
-  // Enable regular expressions (Regex)
-  const RegexSearch = true;
-
-  // Prepare URL for PDF text search API call.
-  // See documentation: https://apidocs.pdf.co
-  var queryPath = `/v1/pdf/find`;
-
-  // JSON payload for api request
-  var jsonPayload = JSON.stringify({
-    password: Password,
-    pages: Pages,
-    url: SourceFileUrl,
-    searchString: SearchString,
-    regexSearch: RegexSearch,
-    async: true,
-  });
-
-  var reqOptions = {
-    host: "api.pdf.co",
-    method: "POST",
-    path: queryPath,
-    headers: {
-      "x-api-key": API_KEY,
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(jsonPayload, "utf8"),
-    },
-  };
-  // Send request
-  var postRequest = https
-    .request(reqOptions, (response) => {
-      response.on("data", (d) => {
-        // Parse JSON response
-        var data = JSON.parse(d);
-        if (data.error === false) {
-          console.log(`Job #${data.jobId} has been created!`);
-          checkIfJobIsCompleted(data.jobId, data.url);
-        } else {
-          // Service reported error
-          console.log(data.message);
-        }
-      });
-    })
-    .on("error", (e) => {
-      // Request error
-      console.log(e);
-    });
-
-  // Write request data
-  postRequest.write(jsonPayload);
-  postRequest.end();
-
-  function checkIfJobIsCompleted(jobId, resultFileUrl) {
-    let queryPath = `/v1/job/check`;
-
+    // Prepare URL for PDF text search API call.
+    var queryPath = `/v1/pdf/find`;
     // JSON payload for api request
-    let jsonPayload = JSON.stringify({
-      jobid: jobId,
+    var jsonPayload = JSON.stringify({
+      password: Password,
+      pages: Pages,
+      url: SourceFileUrl,
+      searchString: SearchString,
+      regexSearch: RegexSearch,
+      async: true,
     });
 
-    let reqOptions = {
+    var reqOptions = {
       host: "api.pdf.co",
-      path: queryPath,
       method: "POST",
+      path: queryPath,
       headers: {
         "x-api-key": API_KEY,
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(jsonPayload, "utf8"),
       },
     };
-
     // Send request
-    var postRequest = https.request(reqOptions, (response) => {
-      response.on("data", (d) => {
-        response.setEncoding("utf8");
-
-        // Parse JSON response
-        let data = JSON.parse(d);
-        console.log(data);
-        console.log(
-          `Checking Job #${jobId}, Status: ${
-            data.status
-          }, Time: ${new Date().toLocaleString()}`
-        );
-
-        if (data.status === "working") {
-          // Check again after 3 seconds
-          setTimeout(function () {
-            checkIfJobIsCompleted(jobId, resultFileUrl);
-          }, 3000);
-        } else if (data.status === "success") {
-          request(
-            { method: "GET", uri: resultFileUrl, gzip: true },
-            function (error, response, body) {
-              // Parse JSON response
-              let respJsonFileArray = JSON.parse(body);
-
-              respJsonFileArray.forEach((element) => {
-                console.log(element);
-                console.log(
-                  "Found text " +
-                    element["text"] +
-                    " at coordinates " +
-                    element["left"] +
-                    ", " +
-                    element["top"]
-                );
-              }, this);
-            }
-          );
-        } else {
-          console.log(`Operation ended with status: "${data.status}".`);
-        }
+    var postRequest = https
+      .request(reqOptions, (response) => {
+        response.on("data", (d) => {
+          // Parse JSON response
+          var data = JSON.parse(d);
+          if (data.error === false) {
+            // console.log(`Job #${data.jobId} has been created!`);
+            checkIfJobIsCompleted(data.jobId, data.url);
+          } else {
+            // Service reported error
+            console.log(data.message);
+          }
+        });
+      })
+      .on("error", (e) => {
+        // Request error
+        console.log(e);
       });
-    });
 
     // Write request data
     postRequest.write(jsonPayload);
     postRequest.end();
-  }
+
+    function checkIfJobIsCompleted(jobId, resultFileUrl) {
+      let queryPath = `/v1/job/check`;
+      // JSON payload for api request
+      let jsonPayload = JSON.stringify({
+        jobid: jobId,
+      });
+
+      let reqOptions = {
+        host: "api.pdf.co",
+        path: queryPath,
+        method: "POST",
+        headers: {
+          "x-api-key": API_KEY,
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(jsonPayload, "utf8"),
+        },
+      };
+
+      // Send request
+      var postRequest = https.request(reqOptions, (response) => {
+        response.on("data", (d) => {
+          response.setEncoding("utf8");
+          // Parse JSON response
+          let data = JSON.parse(d);
+          if (data.status === "working") {
+            // Check again after 3 seconds
+            setTimeout(function () {
+              checkIfJobIsCompleted(jobId, resultFileUrl);
+            }, 2000);
+          } else if (data.status === "success") {
+            request(
+              { method: "GET", uri: resultFileUrl, gzip: true },
+              function (error, response, body) {
+                // Parse JSON response
+                let respJsonFileArray = JSON.parse(body);
+                console.log(respJsonFileArray.length);
+                respJsonFileArray.forEach((element) => {
+                  console.log(element);
+                  console.log(
+                    "Found text " +
+                      element["text"] +
+                      " at coordinates " +
+                      element["left"] +
+                      ", " +
+                      element["top"]
+                  );
+                }, this);
+              }
+            );
+          } else {
+            console.log(`Operation ended with status: "${data.status}".`);
+          }
+        });
+      });
+
+      // Write request data
+      postRequest.write(jsonPayload);
+      postRequest.end();
+    }
+  };
 
   useEffect(() => {
     getComments(pageNumber);
@@ -274,30 +260,39 @@ const Viewer = (props) => {
           </button>
         </a>
       </div>
-      <button
-        onClick={() => {
-          console.log(wordSearch);
-          setWordSearch(true);
-        }}
-      >
-        Add Suggestions
-      </button>
-
+      <div>
+        <button style={{ marginTop: "1%", marginLeft: "2%"}}
+          onClick={() => {
+            setWordSearch(!wordSearch);
+          }}
+        > Add Suggestions
+        </button>
+      </div>
       {wordSearch && (
         <div>
-          <form>
+          <form ref={nameForm} style={{ marginTop: "1%", marginLeft: "2%" }}>
             <label>
-              Name:
-              <input type="text" name="name" />
+              Search Word:
+              <input style={{ marginLeft: "0.5%"}}type="text" name={'name'} />
             </label>
-            <input type="submit" value="Submit" />
+            <button
+              onClick={(event) => {
+                Replaceword(event);
+              }}>
+                Submit 
+              </button>
           </form>
-          <form>
+          <form style={{ marginTop: "1%", marginLeft: "2%" }}>
             <label>
-              Name:
-              <input type="text" name="name" />
+              Suggestion:    
+              <input type="text" name="name" style={{ marginLeft: "1.3%"}}/>
             </label>
-            <input type="submit" value="Submit" />
+            <button
+              onClick={(event) => {
+                Replaceword(event);
+              }}>
+                Submit 
+              </button>
           </form>
         </div>
       )}
