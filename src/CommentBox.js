@@ -35,23 +35,40 @@ const CommentBox = ({ pptname, pageNumber, numPages,currentuser,pptuser }) => {
       slideid: pageNumber,
     };
     if(currentuser===pptuser){
-      setisaf(true);
-    }
-    const bodytosend = {
-      pptid: pptname,
-      id: comments.length + 1,
-      author: author,
-      comment: body,
-      slideid: pageNumber,
-      isaccepted:isaf
-    };
-    setcomments((comments) => comments.concat(comment));
-    axios
+      const bodytosend = {
+        pptid: pptname,
+        id: comments.length + 1,
+        author: author,
+        comment: body,
+        slideid: pageNumber,
+        isaccepted:true
+      };
+      axios
       .post(`http://localhost:5000/ppt/${pptname}/comments`, bodytosend)
       .then((resp) => {
         console.log(resp);
       })
       .catch((err) => console.log(err));
+    }
+    else{
+      const bodytosend = {
+        pptid: pptname,
+        id: comments.length + 1,
+        author: author,
+        comment: body,
+        slideid: pageNumber,
+        isaccepted:false
+      };
+      axios
+      .post(`http://localhost:5000/ppt/${pptname}/comments`, bodytosend)
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => console.log(err));
+    }
+    
+    setcomments((comments) => comments.concat(comment));
+    
   };
   const _handleClick = () => {
     setshowComments(!showComments);
