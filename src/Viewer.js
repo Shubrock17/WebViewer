@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./Comments.scss";
 import CommentBox from "./CommentBox";
@@ -12,16 +12,15 @@ var convertapi = require("convertapi")("0GUin1JxtDw7KydT");
 const Viewer = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [findsearch, setfindsearch] = useState([]);
   const [mergedPdfUrl, setMergedPdfUrl] = useState();
   const [wordSearch, setWordSearch] = useState(false);
-  const [input, setInput] = useState('');
-  const nameForm=useRef(null);
-  // console.log(props);
+  const [input, setInput] = useState("");
+  const nameForm = useRef(null);
 
   const Replaceword = (event) => {
     event.preventDefault();
-    const form=nameForm.current ;
-    console.log(form['name'].value);
+    const form = nameForm.current;
 
     var https = require("https");
     var request = require("request");
@@ -31,11 +30,11 @@ const Viewer = (props) => {
     // Direct URL of source PDF file.
     const SourceFileUrl = props.pdf;
     // Comma-separated list of page indices (or ranges) to process. Leave empty for all pages. Example: '0,2-5,7-'.
-    const Pages = "0-1";
+    const Pages = "";
     // PDF document password. Leave empty for unprotected documents.
     const Password = "";
     // Search string.
-    const SearchString = `${form['name'].value}`;
+    const SearchString = `${form["name"].value}`;
     // Enable regular expressions (Regex)
     const RegexSearch = true;
 
@@ -68,7 +67,6 @@ const Viewer = (props) => {
           // Parse JSON response
           var data = JSON.parse(d);
           if (data.error === false) {
-            // console.log(`Job #${data.jobId} has been created!`);
             checkIfJobIsCompleted(data.jobId, data.url);
           } else {
             // Service reported error
@@ -120,17 +118,26 @@ const Viewer = (props) => {
               function (error, response, body) {
                 // Parse JSON response
                 let respJsonFileArray = JSON.parse(body);
-                console.log(respJsonFileArray.length);
+                setfindsearch(respJsonFileArray);
                 respJsonFileArray.forEach((element) => {
-                  console.log(element);
-                  console.log(
-                    "Found text " +
-                      element["text"] +
-                      " at coordinates " +
-                      element["left"] +
-                      ", " +
-                      element["top"]
-                  );
+                  const value2add = form["name2"].value;
+                  const body = {
+                    slideid: element.pageIndex + 1,
+                    id: Math.random() * 100,
+                    pptid: props.filename,
+                    comment: `${value2add} at ${element["left"]},${element["top"]}`,
+                    author: props.currentuser,
+                    isaccepted: true,
+                  };
+                  axios
+                    .post(
+                      `http://localhost:5000/ppt/${props.filename}/comments`,
+                      body
+                    )
+                    .then((resp) => {
+                      console.log(resp);
+                    })
+                    .catch((err) => console.log(err));
                 }, this);
               }
             );
@@ -201,7 +208,6 @@ const Viewer = (props) => {
     //const url = URL.createObjectURL(mergedPdf);
     //var mergedpdf = new Blob([mergedPdf], { type: 'application/pdf' });
     const pdfurlcloud = await uploadFileToBlob(mergedPdf);
-    console.log(pdfurlcloud);
     const resultfinal = await convertapi.convert(
       "pptx",
       {
@@ -209,7 +215,6 @@ const Viewer = (props) => {
       },
       "pdf"
     );
-    console.log(resultfinal.response.Files[0].Url);
     setMergedPdfUrl(resultfinal.response.Files[0].Url);
   };
   const test = async () => {
@@ -261,40 +266,46 @@ const Viewer = (props) => {
         </a>
       </div>
       <div>
-        <button style={{ marginTop: "1%", marginLeft: "2%"}}
+        <button
+          style={{ marginTop: "1%", marginLeft: "2%" }}
           onClick={() => {
             setWordSearch(!wordSearch);
           }}
-        > Add Suggestions
+        >
+          {" "}
+          Add Suggestions
         </button>
       </div>
       {wordSearch && (
-        <div>
-          <form ref={nameForm} style={{ marginTop: "1%", marginLeft: "2%" }}>
-            <label>
-              Search Word:
-              <input style={{ marginLeft: "0.5%"}}type="text" name={'name'} />
-            </label>
-            <button
-              onClick={(event) => {
-                Replaceword(event);
-              }}>
-                Submit 
+        <>
+          <div>
+            <form ref={nameForm} style={{ marginTop: "1%", marginLeft: "2%" }}>
+              <label>
+                Search Word:
+                <input
+                  style={{ marginLeft: "0.5%", marginRight: "1.0%" }}
+                  type="text"
+                  name={"name"}
+                />
+              </label>
+              <label>
+                Suggestion:
+                <input
+                  type="text"
+                  name="name2"
+                  style={{ marginLeft: "1.3%" }}
+                />
+              </label>
+              <button
+                onClick={(event) => {
+                  Replaceword(event);
+                }}
+              >
+                Submit
               </button>
-          </form>
-          <form style={{ marginTop: "1%", marginLeft: "2%" }}>
-            <label>
-              Suggestion:    
-              <input type="text" name="name" style={{ marginLeft: "1.3%"}}/>
-            </label>
-            <button
-              onClick={(event) => {
-                Replaceword(event);
-              }}>
-                Submit 
-              </button>
-          </form>
-        </div>
+            </form>
+          </div>
+        </>
       )}
       <div
         style={{ float: "left", width: "60%", margin: "2%", height: "100%" }}
