@@ -122,7 +122,7 @@ const Home = () => {
                   {" "}
                   <div>
                     <div
-                      style={{ display: "inline", width: "35%", float: "left" }}
+                      style={{ display: "inline", width: "50%", float: "left" }}
                       onClick={(event) => {
                         showViewer(post.pdfurl);
                       }}
