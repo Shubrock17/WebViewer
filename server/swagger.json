@@ -80,19 +80,19 @@
     "/ppt/{pptId}": {
       "parameters": [
         {
-          "name": "userId",
+          "name": "pptid",
           "in": "path",
           "required": true,
-          "description": "ID of user that we want to find",
+          "description": "ID of ppt that we want to find",
           "type": "string"
         }
       ],
       "get": {
-        "tags": ["Users"],
-        "summary": "Get user with given ID",
+        "tags": ["PPT"],
+        "summary": "Get ppt with given ID",
         "responses": {
           "200": {
-            "description": "User is found",
+            "description": "ppt is found",
             "schema": {
               "$ref": "#/definitions/PPT"
             }
@@ -100,11 +100,11 @@
         }
       },
       "delete": {
-        "summary": "Delete user with given ID",
-        "tags": ["Users"],
+        "summary": "Delete ppt with given ID",
+        "tags": ["PPT"],
         "responses": {
           "200": {
-            "description": "User is deleted",
+            "description": "ppt is deleted",
             "schema": {
               "$ref": "#/definitions/PPT"
             }
@@ -112,13 +112,13 @@
         }
       },
       "put": {
-        "summary": "Update user with give ID",
-        "tags": ["Users"],
+        "summary": "Update PPT with with give ID",
+        "tags": ["PPT"],
         "parameters": [
           {
-            "name": "user",
-            "in": "body",
-            "description": "User with new values of properties",
+            "name": "pptid",
+            "in": "path",
+            "description": "PPT with new comments",
             "schema": {
               "$ref": "#/definitions/PPT"
             }
@@ -126,7 +126,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User is updated",
+            "description": "PPT is updated",
             "schema": {
               "$ref": "#/definitions/PPT"
             }
@@ -134,6 +134,227 @@
         }
       }
     }
+    ,
+    "/ppt/{pptId}/comments": {
+      "parameters": [
+        {
+          "name": "pptid",
+          "in": "path",
+          "required": true,
+          "description": "ID of ppt that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["PPT"],
+        "summary": "Get comments with given PPT ID",
+        "responses": {
+          "200": {
+            "description": "Comments are found",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all comments of ppt with given ID",
+        "tags": ["PPT"],
+        "responses": {
+          "200": {
+            "description": "comments are deleted",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update PPT with with give ID",
+        "tags": ["PPT"],
+        "parameters": [
+          {
+            "name": "pptid",
+            "in": "path",
+            "description": "PPT with new comments",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PPT is updated",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["PPT"],
+        "summary": "Add a comment to a PPT",
+        "description": "Add entry for new comment in the ppt",
+        "parameters": [
+            {
+              "name": "pptid",
+              "in": "path",
+              "required": true,
+              "description": "ID of ppt in which comment is added",
+              "type": "string"
+            },
+            {
+                "name": "comment",
+                "in": "body",
+                "required": true,
+                "description": "comment to be inserted in PPT",
+                "type": "string"
+            },
+            {
+                "name": "id",
+                "in": "body",
+                "required": true,
+                "description": "ID of comment which is added",
+                "type": "number"
+            },
+            {
+              "name": "author",
+              "in": "body",
+              "required": true,
+              "description": "author of the ppt",
+              "type": "string"
+            },
+            {
+              "name": "author_id",
+              "in": "body",
+              "required": false,
+              "description": "ID of the author of PPT",
+              "type": "string"
+            },
+            {
+              "name": "pptid",
+              "in": "body",
+              "required": true,
+              "description": "ID of the PPT in which comment is added",
+              "type": "string"
+            },
+            {
+              "name": "slideid",
+              "in": "body",
+              "required": true,
+              "description": "ID of slide in which comment is to be added",
+              "type": "number"
+            },
+            {
+              "name": "isaccepted",
+              "in": "body",
+              "required": true,
+              "description": "tells whether comment is accepted by author or not",
+              "type": "boolean"
+            }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New comment is added to ppt",
+            "schema": {
+              "$ref": "#/definitions/PPT"
+            }
+          }
+        }
+      }
+    },
+      "/ppt/user/{user}": {
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "user with given UserID",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "tags": ["PPT"],
+          "summary": "Get user with given userID",
+          "responses": {
+            "200": {
+              "description": "User is Found",
+              "schema": {
+                "$ref": "#/definitions/PPT"
+              }
+            }
+          }
+        }
+      },
+      "/ppt/user/{user}/commentsreq": {
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "Sends Comments to Authors for Authorisation",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "tags": ["PPT"],
+          "summary": "Get comments for Authorisation",
+          "responses": {
+            "200": {
+              "description": "Comments sent for Authorisation",
+              "schema": {
+                "$ref": "#/definitions/PPT"
+              }
+            }
+          }
+        }
+      },
+      "/ppt/user/{pptid}/commentsreq": {
+        "parameters": [
+          {
+            "name": "pptid",
+            "in": "path",
+            "required": true,
+            "description": "Lets Author accept or reject comments of PPT",
+            "type": "string"
+          }
+        ],
+        "delete": {
+          "tags": ["PPT"],
+          "summary": "Delete Comment from PPT",
+          "responses": {
+            "200": {
+              "description": "comment are deleted",
+              "schema": {
+                "$ref": "#/definitions/PPT"
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": ["PPT"],
+          "summary": "Update PPT with new Comment",
+          "parameters": [
+            {
+              "name": "pptid",
+              "in": "path",
+              "description": "PPT with new comments",
+              "schema": {
+                "$ref": "#/definitions/PPT"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "PPT is updated",
+              "schema": {
+                "$ref": "#/definitions/PPT"
+              }
+            }
+          }
+        }
+      }
   },
   "definitions": {
     "PPT": {
